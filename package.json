@@ -1,0 +1,16 @@
+{
+  "name": "staffsync",
+  "version": "1.0.0",
+  "description": "StaffSync — MERN HRM System",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "seed": "node server/src/seed/seed.js",
+    "test": "npm test --prefix server",
+    "build": "npm run build --prefix client",
+    "start": "node server/src/server.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

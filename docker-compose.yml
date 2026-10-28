@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: staffsync-app
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/staffsync
+      - JWT_ACCESS_SECRET=staffsync-production-jwt-access-secret-minimum-32-chars!
+      - JWT_REFRESH_SECRET=staffsync-production-jwt-refresh-secret-minimum-32-chars!
+      - ACCESS_TOKEN_TTL=15m
+      - REFRESH_TOKEN_TTL=7d
+      - CLIENT_ORIGIN=http://localhost:5000
+      - COMPANY_TZ=Asia/Kolkata
+      - WORK_START=09:30
+      - LATE_GRACE_MINUTES=15
+      - FULL_DAY_MINUTES=480
+      - HALF_DAY_MINUTES=240
+      - WEEKEND_DAYS=0,6
+      - LEAVE_BACKDATE_DAYS=7
+      - SEED_PASSWORD=StaffSync@Admin2026!
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:8
+    container_name: staffsync-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local
